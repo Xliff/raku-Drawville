@@ -1,0 +1,6 @@
+prefix=Drawville
+modules=lib/Drawville
+lib=drawville
+include-directory=/usr/local/include/drawville
+backups=backup,bitbucket,google-backup,azure-backup,hut
+build_exclude=
