@@ -10,6 +10,11 @@ class Drawville::Turtle is Drawville::Canvas {
   has $.rotation;
   has $.brush-on;
 
+  submethod BUILD {
+    $!rotation = $!pos-x = $!pos-y = 0;
+    $!brush-on = False;
+  }
+
   method up   { $!brush-on = False }
   method down { $!brush-on = True  }
 
@@ -26,8 +31,20 @@ class Drawville::Turtle is Drawville::Canvas {
     $!brush-on = True;
     self.move($x, $y);
     $!brush-on = $prev-brush-state;
+  }
 
-    self.set_pixel( |$_ ) for self.line($.pos-x, $.pos-y, $x, $y);
+  method move ($x, $y) {
+    if $!brush-on {
+      for self.line($.pos-x, $.pos-y, $x, $y) {
+        # cw: Y adjustment determined by trial and error!
+        self.set_pixel($xx, $yy + 25, origin => C);
+      }
+    }
+
+    ($!pos-x,$!pos-y) = ($x, $y);
   }
 
 }
+
+my constant Turtle is export(:alias) = Drawville::Turtle;
+my constant T      is export(:a)     = Turtle;
